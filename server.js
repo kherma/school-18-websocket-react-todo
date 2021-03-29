@@ -30,16 +30,16 @@ io.on("connection", (socket) => {
   // Listener of new task
   socket.on("addTask", (task) => {
     tasks.push(task);
-
     // Emit new task to other users
     socket.broadcast.emit("addTask", task);
   });
 
   // Listener of remove task
-  socket.on("removeTask", (index) => {
+  socket.on("removeTask", (id) => {
+    const index = tasks.indexOf(tasks.find((task) => task.id === id));
     tasks.splice(index, 1);
     // Emit remove task to other users
-    socket.broadcast.emit("removeTask", index);
+    socket.broadcast.emit("removeTask", id);
   });
 });
 

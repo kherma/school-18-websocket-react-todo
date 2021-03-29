@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { v4 as uuidv4 } from "uuid";
 import io from "socket.io-client";
 
 const App = () => {
@@ -36,12 +37,16 @@ const App = () => {
 
   const submitForm = (event) => {
     event.preventDefault();
-    socket.emit("addTask", taskName);
-    addTask(taskName);
+    const task = {
+      name: taskName,
+      id: uuidv4(),
+    };
+    socket.emit("addTask", task);
+    addTask(task);
   };
 
   const removeTask = (index, emitEvent) => {
-    const newState = tasks.filter((_, itemIndex) => itemIndex !== index);
+    const newState = tasks.filter(({ name, id }) => id !== index);
     setTasks([...newState]);
     emitEvent && socket.emit("removeTask", index);
   };
@@ -66,12 +71,12 @@ const App = () => {
         <h2>Tasks</h2>
 
         <ul className="tasks-section__list" id="tasks-list">
-          {tasks.map((task, index) => (
-            <li className="task" key={index}>
-              {task}{" "}
+          {tasks.map(({ name, id }) => (
+            <li className="task" key={id}>
+              {name}{" "}
               <button
                 className="btn btn--red"
-                onClick={() => removeTask(index, true)}
+                onClick={() => removeTask(id, true)}
               >
                 Remove
               </button>
