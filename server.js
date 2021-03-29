@@ -24,7 +24,7 @@ const io = socket(server);
 
 io.on("connection", (socket) => {
   // Emit tasks array to connected socket
-  console.log("User with id: " + socket.id + " has connected");
+  console.log("User with id:" + socket.id + " has connected");
   socket.emit("updateData", tasks);
 
   // Listener of new task
@@ -38,7 +38,6 @@ io.on("connection", (socket) => {
   // Listener of remove task
   socket.on("removeTask", (index) => {
     tasks.splice(index, 1);
-
     // Emit remove task to other users
     socket.broadcast.emit("removeTask", index);
   });
