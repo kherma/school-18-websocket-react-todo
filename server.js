@@ -14,7 +14,7 @@ const port = 8000;
 const app = express();
 
 const server = app.listen(process.env.PORT || port, () => {
-  console.log(`Server is running on port: ${port}`);
+  console.log(`Server is running on port ${port}`);
 });
 const io = socket(server);
 
@@ -22,8 +22,9 @@ const io = socket(server);
 // Server Events
 // ================
 
-io.on("connect", (socket) => {
+io.on("connection", (socket) => {
   // Emit tasks array to connected socket
+  console.log("User with id: " + socket.id + " has connected");
   socket.emit("updateData", tasks);
 
   // Listener of new task

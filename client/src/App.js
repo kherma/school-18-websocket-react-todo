@@ -1,6 +1,13 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import io from "socket.io-client";
 
-function App() {
+const App = () => {
+  const [socket, setSocket] = useState();
+
+  useEffect(() => {
+    setSocket(io("http://localhost:8000"));
+  }, []);
+
   return (
     <div className="App">
       <header>
@@ -34,6 +41,6 @@ function App() {
       </section>
     </div>
   );
-}
+};
 
 export default App;
